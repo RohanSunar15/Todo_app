@@ -24,8 +24,12 @@ class AddTask extends TodoEvent{
 class DeleteTask extends TodoEvent {
   final int index;
 
-  DeleteTask(this.index);
+  DeleteTask({required this.index});
+}
 
-  @override
-  List<Object> get props => [index];
+class EditTask extends TodoEvent {
+  final int index;
+  final String updatedName;
+
+  EditTask({required this.index, required this.updatedName});
 }

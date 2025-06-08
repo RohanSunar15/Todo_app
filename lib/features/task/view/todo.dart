@@ -35,15 +35,18 @@ class _TodoState extends State<Todo> {
       appBar: AppBar(
         title: const Text('Todo App',),
         actions: [
-          IconButton(
-            icon: Icon(
-              context.read<ThemeCubit>().state == ThemeMode.light
-                  ? Icons.wb_sunny_outlined
-                  : Icons.nightlight_round,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: IconButton(
+              icon: Icon(
+                context.read<ThemeCubit>().state == ThemeMode.light
+                    ? Icons.wb_sunny_outlined
+                    : Icons.nightlight_round,
+              ),
+              onPressed: () {
+                context.read<ThemeCubit>().toggleTheme();
+              },
             ),
-            onPressed: () {
-              context.read<ThemeCubit>().toggleTheme();
-            },
           ),
           // Icon(Icons.nightlight_outlined),
         ],
@@ -51,12 +54,30 @@ class _TodoState extends State<Todo> {
       body: BlocConsumer<TodoBloc, TodoState>(
         listener: (context, state) async {
           if (state is TaskAdded) {
-            await Future.delayed(Duration(seconds: 1));
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
                 SnackBar(
                   content: Text('New Task Added Successfully'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+          } else if (state is TaskDeleted) {
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text('Task Deleted Successfully'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+          }else if (state is TaskEdited) {
+            await Future.delayed(Duration(seconds: 1));
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: Text('Task Edited Successfully'),
                   duration: Duration(seconds: 2),
                 ),
               );
@@ -72,7 +93,35 @@ class _TodoState extends State<Todo> {
                   taskCompleted: state.todos[index].isCompleted,
                   onChanged: (_) =>
                       context.read<TodoBloc>().add(ToggleTodoStatus(index)),
-                  onTap: () {},
+                  onSelected: (value){
+                    if (value == 'edit') {
+                      _controller.text = state.todos[index].title; // Pre-fill the current title
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AddTodoDialog(
+                            controller: _controller,
+                            onSave: () {
+                              final updatedText = _controller.text.trim();
+                              if (updatedText.isNotEmpty) {
+                                context.read<TodoBloc>().add(
+                                  EditTask(index: index, updatedName: updatedText),
+                                );
+                                _controller.clear();
+                                Navigator.of(context).pop();
+                              }
+                            },
+                            onCancel: () {
+                              _controller.clear();
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      );
+                    } else if (value == 'delete') {
+                      context.read<TodoBloc>().add(DeleteTask(index: index));
+                    }
+                  },
                 );
               },
             );

@@ -15,6 +15,8 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<LoadTasks>(loadTasks);
     on<ToggleTodoStatus>(toggleTodoStatus);
     on<AddTask>(addTask);
+    on<DeleteTask>(deleteTask);
+    on<EditTask>(editTask);
   }
 
   FutureOr<void> loadTasks(LoadTasks event, Emitter<TodoState> emit) {
@@ -43,4 +45,20 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   }
 
 
+
+  FutureOr<void> deleteTask(DeleteTask event, Emitter<TodoState> emit) {
+    todoBox.deleteAt(event.index);
+    add(LoadTasks());
+    emit(TaskDeleted());
+  }
+
+  FutureOr<void> editTask(EditTask event, Emitter<TodoState> emit) {
+    final current = todoBox.getAt(event.index);
+    if (current != null) {
+      final updated = current.copyWith(title: event.updatedName);
+      todoBox.putAt(event.index, updated);
+      add(LoadTasks());
+      emit(TaskEdited());
+    }
+  }
 }

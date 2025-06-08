@@ -11,6 +11,9 @@ class AppColor {
   static const Color lightModeAddButtonColor = Color(0xFF00ACC1);
   static const Color lightModeAddButtonIconColor = Color(0xFFFFFFFF);
   static const Color lightModeSunIconColor = Color(0xFFFFC107);
+  static const Color lightModePopupBackgroundColor = Color(0xFFB3E0F1);
+  static const Color lightModePopupTextColor = Color(0xFF2A3A4D);
+
 
   //Dark Mode
   static const Color darkModeBackgroundColor = Color(0xFF1A2D3D);
@@ -22,6 +25,9 @@ class AppColor {
   static const Color darkModeAddButtonColor = Color(0xFF00ACC1);
   static const Color darkModeAddButtonIconColor = Color(0xFFFFFFFF);
   static const Color darkModeMoonIconColor = Color(0xFFB3E0F1);
+  static const Color darkModePopupBackgroundColor = Color(0xFF2D4B5D);
+  static const Color darkModePopupTextColor = Color(0xFFE0F2F7);
+
 
   static const Color transparent = Colors.transparent;
 }

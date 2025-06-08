@@ -5,7 +5,6 @@ import 'package:todo_app/features/task/data/models/todo_model.dart';
 import 'package:todo_app/features/task/view/todo.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'core/theme/app_theme.dart' as AppTheme;
 
 
@@ -41,6 +40,7 @@ class MyApp extends StatelessWidget {
             title: 'Todo App',
             theme: AppTheme.lightTheme,
             darkTheme: AppTheme.darkTheme,
+            debugShowCheckedModeBanner: false,
             themeMode: context.watch<ThemeCubit>().state,
             home: Todo(),
           );

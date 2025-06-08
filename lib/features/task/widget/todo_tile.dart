@@ -1,55 +1,91 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app/core/utils/customWidget/custom_popup_menu.dart';
 
 class TodoTile extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
-  Function(bool?)? onChanged;
-  GestureTapCallback? onTap;
+  final Function(bool?)? onChanged;
+  final Function(String) onSelected;
 
-  TodoTile({
+  const TodoTile({
     super.key,
     required this.taskName,
     required this.taskCompleted,
     required this.onChanged,
-    required this.onTap,
+    required this.onSelected,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
       child: Container(
-        padding: EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryFixed,
+          color: taskCompleted ? Colors.green.shade100 : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Checkbox(
               value: taskCompleted,
               onChanged: onChanged,
               shape: const CircleBorder(),
             ),
-            Column(
-              children: [
-                Text(
-                  taskName,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
+            const SizedBox(width: 10),
+
+            /// Expanded text to take remaining space
+            Expanded(
+              child: Text(
+                taskName,
+                style:  TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  decoration: taskCompleted ? TextDecoration.lineThrough : TextDecoration.none,
+                  color: taskCompleted ? Colors.green.shade900 : null,
                 ),
-
-              ],
+                overflow: TextOverflow.ellipsis,
+                maxLines: 10,
+              ),
             ),
-            Spacer(),
-            InkWell(
-              onTap: onTap,
-                child: Icon(Icons.more_horiz_outlined)
+            const SizedBox(width: 10),
+
+            /// Ensure the popup menu doesn't expand
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                minWidth: 0,
+                maxWidth: 40,
+              ),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: CustomPopupMenu(
+                  menuItems: [
+                    PopupMenuItem(
+                      value: 'edit',
+                      child: Row(
+                        children:  [
+                          Icon(Icons.edit, size: 18,color: Theme.of(context).colorScheme.onSurface),
+                          SizedBox(width: 8),
+                          Text('Edit', style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'delete',
+                      child: Row(
+                        children:  [
+                          Icon(Icons.delete, size: 18, color: Colors.red),
+                          SizedBox(width: 8),
+                          Text('Delete',style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+                        ],
+                      ),
+                    ),
+                  ],
+                  onSelected: onSelected,
+                ),
+              ),
             ),
-
-
           ],
         ),
       ),

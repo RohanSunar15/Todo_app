@@ -12,3 +12,7 @@ class TaskLoaded extends TodoState {
 }
 
 class TaskAdded extends TodoState{}
+
+class TaskDeleted extends TodoState{}
+
+class TaskEdited extends TodoState{}

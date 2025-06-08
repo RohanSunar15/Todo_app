@@ -49,6 +49,12 @@ ThemeData lightTheme = ThemeData(
     ),
     checkColor: WidgetStateProperty.all(AppColor.lightModeAddButtonIconColor),
   ),
+  popupMenuTheme: PopupMenuThemeData(
+    color: AppColor.lightModePopupBackgroundColor,
+    textStyle: TextStyle(color: AppColor.lightModePopupTextColor),
+    surfaceTintColor: Colors.transparent,
+  ),
+
   dialogTheme: DialogThemeData(backgroundColor: AppColor.lightModeCardColor),
 );
 
@@ -100,5 +106,12 @@ ThemeData darkTheme = ThemeData(
     ),
     checkColor: WidgetStateProperty.all(AppColor.darkModeAddButtonIconColor),
   ),
+  popupMenuTheme: PopupMenuThemeData(
+    color: AppColor.darkModePopupBackgroundColor,
+    textStyle: TextStyle(color: AppColor.darkModePopupTextColor),
+    surfaceTintColor: Colors.transparent,
+  ),
+
+
   dialogTheme: DialogThemeData(backgroundColor: AppColor.darkModeCardColor),
 );
